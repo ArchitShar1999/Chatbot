@@ -1,0 +1,315 @@
+* { box-sizing: border-box; margin: 0; font-family: Arial, sans-serif; }
+
+/* ---------------- Header & Footer ---------------- */
+.chatbot-header, .chatbot-footer {
+    height: 60px;
+    background-color: #00303E;
+    display: flex;
+    align-items: center;
+    padding: 0 15px;
+}
+
+.hometab { margin-left: auto; display: flex; align-items: center; cursor: pointer; }
+.icon-img { width: 20px; height: 20px; }
+.closebtn{ border: 0; padding: 0; cursor: pointer; background: none; }
+
+/* ---------------- Layout ---------------- */
+.chatbot-layout {
+    display: flex;
+    height: calc(100vh - 120px); /* full height minus header+footer */
+}
+
+.chatbot-sidebar {
+    width: 200px;
+    background-color: #F0F0F0;
+    padding: 10px;
+    transition: all 0.3s ease;
+}
+
+.chatbot-sidebar.is-hidden { width: 0; padding: 0; overflow: hidden; }
+
+.chatbot-sidebar-header { display: flex; justify-content: space-between; align-items: center; }
+.chatbot-sidebar-logo { width: 150px; }
+
+.btn {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #333;
+    background: transparent;
+    cursor: pointer;
+    margin-top: 10px;
+    border-radius: 5px;
+}
+.btn:hover { background-color: #00303E; color: #fff; }
+
+/* ---------------- Main ---------------- */
+.chatbot-main {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* prevent whole main from scrolling */
+}
+
+/* ---------------- Search/Home ---------------- */
+.search-screen {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.chatbot-brand-logo { width: 320px; margin-bottom: 40px; }
+
+.chatbot-search {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.chatbot-search-input,
+.chatbot-search-input_2 {
+    height: 38px;
+    border-radius: 8px;
+    border: 1px solid #000;
+    padding: 0 10px;
+    text-align: center;
+}
+
+.chatbot-search-input { width: 360px; }
+.chatbot-search-input_2 { width: 180px; }
+
+.chatbot-search-btn {
+    margin-top: 12px;
+    width: 40%;
+    height: 36px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    background-color: #00303E;
+    color: #fff;
+    flex-shrink: 0;
+}
+
+/* ---------------- Chat View ---------------- */
+.chat-view {
+    flex: 1;
+    display: none;
+    flex-direction: column;
+    overflow: hidden; /* container doesn't scroll */
+}
+
+/* Only messages scroll */
+.chat-messages {
+    flex: 1;
+    padding: 24px 18%;
+    overflow-y: auto;   /* SCROLLING AREA */
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    background-color: #f0f0f0;
+}
+
+/* ---------------- Chat Bubbles ---------------- */
+.chat {
+    max-width: 70%;
+    padding: 12px 16px;
+    border-radius: 14px;
+    line-height: 1.5;
+    word-wrap: break-word;
+}
+
+.chat.user {
+    align-self: flex-end;
+    background-color: #007bff;
+    color: #fff;
+    border-bottom-right-radius: 4px;
+}
+
+.chat.bot {
+    align-self: flex-start;
+    background-color: #e5e5ea;
+    color: #000;
+    border-bottom-left-radius: 4px;
+}
+
+/* ---------------- Input Bar ---------------- */
+.chat-input-bar {
+    padding: 10px 18%;
+    border-top: 1px solid #ddd;
+    display: flex;
+    gap: 10px;
+    background-color: #fff;
+}
+
+.chat-input-bar textarea {
+    flex: 1;
+    height: 36px;
+    resize: none;
+    padding: 10px;
+    border-radius: 12px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+}
+
+.chat-input-bar button {
+    padding: 0 20px;
+    border-radius: 12px;
+    border: none;
+    background-color: #007bff;
+    color: #fff;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.chat-input-bar button:hover {
+    background-color: #0056b3;
+}
+
+/* ---------------- Sidebar Toggle ---------------- */
+.chatbot-sidebar-open-btn { display: none; background: none; border: none; cursor: pointer; }
+.chatbot-sidebar-open-btn.show { display: inline-block; }
+
+.header-logo { height: 120px; display: none; }
+.header-logo.show { display: inline-block; }
+
+/* ---------------- Home Page ---------------- */
+.home-wrapper {
+    height:100%;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+}
+
+.home-logo {
+    width:420px;
+    margin-bottom:50px;
+}
+
+.home-cards {
+    display:flex;
+    gap:40px;
+}
+
+.home-card {
+    width:220px;
+    height:120px;
+    border:2px solid #00303E;
+    border-radius:12px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    gap:10px;
+    cursor:pointer;
+    transition:all 0.2s ease;
+}
+
+.home-card:hover {
+    transform:scale(1.05);
+    background:#f4f8fa;
+}
+
+.home-icon {
+    width:28px;
+}
+
+.home-card span {
+    font-size:15px;
+    color:#00303E;
+    font-weight:500;
+}
+
+@media (max-width: 900px) {
+    .chat-messages,
+    .chat-input-bar { padding: 20px; }
+}
+
+/* ---------------- Recent Chats ---------------- */
+.recent-chats {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* prevents full-page scroll */
+    padding: 0 18%;
+}
+
+.recent-chats-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #ddd;
+}
+
+.recent-chats-header h2 {
+    margin: 0;
+    font-size: 18px;
+    color: #00303E;
+}
+
+.btn-close {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 5px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.btn-close:hover {
+    background-color: #0056b3;
+}
+
+.recent-chats-list {
+    flex: 1;
+    overflow-y: auto;  /* Only this scrolls */
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding: 20px 0;
+}
+
+.recent-chat-item {
+    padding: 12px 16px;
+    background-color: #e5e5ea;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.recent-chat-item:hover {
+    background-color: #d1d1d6;
+}
+
+.recent-chat-item strong {
+    display: block;
+    font-size: 16px;
+    color: #00303E;
+}
+
+.recent-chat-item p {
+    margin: 4px 0 0 0;
+    font-size: 14px;
+    color: #555;
+}
+
+/* ================= HOME PAGE – NO SIDEBAR ================= */
+
+/* Hide sidebar on home */
+body.home-active .chatbot-sidebar {
+    display: none;
+}
+
+/* Expand main area when sidebar is hidden */
+body.home-active .chatbot-main {
+    width: 100%;
+}
+
+/* Hide menu button on home */
+body.home-active .chatbot-sidebar-open-btn {
+    display: none !important;
+}

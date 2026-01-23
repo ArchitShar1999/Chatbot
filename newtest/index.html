@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BEUMER Group Alarm Chatbot</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="container">
+
+        <!-- HEADER -->
+        <header class="chatbot-header">
+            <button id="openSidebarBtn" class="chatbot-sidebar-open-btn" onclick="openSidebar()">
+                <img src="icons/menu.svg" class="icon-img" alt="Menu">
+            </button>
+
+            <img src="Beumer_logo_W.png" class="header-logo" id="headerLogo" alt="Logo">
+
+            <div class="hometab" onclick="goHome()">
+                <img src="icons/home.svg" class="icon-img" alt="Home">
+            </div>
+        </header>
+
+        <!-- MAIN LAYOUT -->
+        <div class="chatbot-layout">
+
+            <!-- SIDEBAR -->
+            <aside class="chatbot-sidebar" id="chatbotSidebar">
+                <div class="chatbot-sidebar-header">
+                    <img src="Logo-BEUMER-Group.webp" class="chatbot-sidebar-logo" alt="Logo">
+                    <button onclick="closeSidebar()" class="closebtn">
+                        <img src="icons/close.svg" class="icon-img" alt="Close">
+                    </button>
+                </div>
+                <button class="btn" onclick="goHome()">New Conversation</button>
+                <button class="btn" onclick="showRecent()">Recent Chats</button>
+            </aside>
+
+            <!-- MAIN CONTENT -->
+            <main class="chatbot-main">
+
+                <!-- HOME PAGE -->
+                <div class="home-wrapper" id="homePage">
+                    <img src="Logo-BEUMER-Group.webp" class="home-logo" alt="Logo">
+
+                    <div class="home-cards">
+                        <div class="home-card" onclick="startConversationFromHome()">
+                            <img src="icons/chat.svg" class="home-icon">
+                            <span>Start Conversation</span>
+                        </div>
+
+                        <div class="home-card" onclick="showRecent()">
+                            <img src="icons/clock.svg" class="home-icon">
+                            <span>Recent Conversations</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RECENT CHATS PAGE -->
+                <div class="recent-chats" id="recentPage" style="display:none">
+
+                    <!-- Header for recent chats -->
+                    <div class="recent-chats-header">
+                        <h2>Recent Conversations</h2>
+                        <button class="btn-close" onclick="goHome()">Back</button>
+                    </div>
+
+                    <!-- Scrollable list -->
+                    <div class="recent-chats-list" id="recentChatsList">
+                        <!-- Example items -->
+                        <div class="recent-chat-item" onclick="openRecentChat('Conveyor belt alarm resolved')">
+                            <strong>Conveyor belt alarm resolved</strong>
+                            <p>Resolved at 10:32 AM</p>
+                        </div>
+                        <div class="recent-chat-item" onclick="openRecentChat('Motor overload issue')">
+                            <strong>Motor overload issue</strong>
+                            <p>Resolved at 09:45 AM</p>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <!-- SEARCH SCREEN -->
+                <div class="search-screen" id="searchScreen" style="display:none">
+                    <img src="Logo-BEUMER-Group.webp" class="chatbot-brand-logo">
+                    <div class="chatbot-search">
+                        <input id="queryInput" class="chatbot-search-input" placeholder="Ask your question">
+                        <input id="alarmInput" class="chatbot-search-input_2" placeholder="Alarm Code">
+                    </div>
+                    <button class="chatbot-search-btn" onclick="startChat()">Search</button>
+                </div>
+
+                <!-- CHAT SCREEN -->
+                <div class="chat-view" id="chatView" style="display:none">
+                    <div class="chat-messages" id="resultTab"></div>
+                    <div class="chat-input-bar">
+                        <textarea id="chatInput" placeholder="Send a message..."></textarea>
+                        <button onclick="sendMessage()">Send</button>
+                    </div>
+                </div>
+
+            </main>
+        </div>
+
+        <footer class="chatbot-footer"></footer>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
