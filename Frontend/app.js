@@ -134,7 +134,7 @@ window.callBackend = async function (userText) {
 window.fakeBot = async function (text) {
     const typingDiv = document.createElement("div");
     typingDiv.className = "chat bot";
-    typingDiv.textContent = "Typing...";
+    typingDiv.textContent = "Loading...";
     resultTab.appendChild(typingDiv);
     resultTab.scrollTop = resultTab.scrollHeight;
 
