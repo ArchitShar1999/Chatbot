@@ -1,0 +1,13 @@
+fastapi
+uvicorn
+python-multipart
+
+pandas
+openpyxl
+
+chromadb
+langchain-community
+langchain-core
+sentence-transformers
+
+llama-cpp-python
