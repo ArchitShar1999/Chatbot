@@ -167,7 +167,7 @@ POST /upload-excel
 This project uses a **local LLM model**:
 
 ```
-Meta-Llama-3.1-8B-Instruct-Q4_K_M.gguf
+mistral-7b-instruct-v0.1.Q4_K_M.gguf
 ```
 
 **Steps:
@@ -177,7 +177,7 @@ Meta-Llama-3.1-8B-Instruct-Q4_K_M.gguf
 This project uses a **local LLM model**:
 
 ```
-Meta-Llama-3.1-8B-Instruct-Q4_K_M.gguf
+mistral-7b-instruct-v0.1.Q4_K_M.gguf
 ```
 
 **Steps:**
@@ -187,7 +187,7 @@ Meta-Llama-3.1-8B-Instruct-Q4_K_M.gguf
 3. Place it here:
 
 ```
-Backend/models/Meta-Llama-3.1-8B-Instruct-Q4_K_M.gguf
+Backend/models/mistral-7b-instruct-v0.1.Q4_K_M.gguf
 ```
 
 > ⚠️ The application will not start if the model f
