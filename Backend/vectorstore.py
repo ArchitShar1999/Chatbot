@@ -112,7 +112,7 @@ def search_context(query: str) -> str:
     # 🔒 EXACT MATCH BY METADATA (CORRECT WAY)
     if alarm_code:
         results = vectorstore.similarity_search(
-            query="dummy",  # ignored
+            query="",
             k=1,
             filter={"alarm_code": alarm_code}
         )
