@@ -1,9 +1,9 @@
-from fastapi import FastAPI, UploadFile, File, HTTPException
-from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
-import pandas as pd
 from io import BytesIO
 
+import pandas as pd
+from fastapi import FastAPI, File, HTTPException, UploadFile
+from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
 from rag import ask_alarm_bot
 from vectorstore import ingest_excel
 
@@ -17,7 +17,7 @@ app.add_middleware(
 )
 
 # -----------------------
-# MODELS
+# MODELS    
 # -----------------------
 class Query(BaseModel):
     question: str
