@@ -7,11 +7,53 @@ document.addEventListener("DOMContentLoaded", () => {
     const homePage = document.getElementById("homePage");
     const searchScreen = document.getElementById("searchScreen");
     const chatView = document.getElementById("chatView");
+    const recentPage = document.getElementById("recentPage");
 
     const queryInput = document.getElementById("queryInput");
     const alarmInput = document.getElementById("alarmInput");
     const chatInput = document.getElementById("chatInput");
     const resultTab = document.getElementById("resultTab");
+
+    /* ---------------- Utilities ---------------- */
+    function resetConversation() {
+        queryInput.value = "";
+        alarmInput.value = "";
+        chatInput.value = "";
+        resultTab.innerHTML = "";
+    }
+
+    function saveToRecent(text) {
+        let recents = JSON.parse(localStorage.getItem("recentChats")) || [];
+
+        recents = recents.filter(item => item.text !== text);
+
+        recents.unshift({
+            text,
+            time: new Date().toLocaleTimeString()
+        });
+
+        localStorage.setItem("recentChats", JSON.stringify(recents.slice(0, 10)));
+    }
+
+    function loadRecentChats() {
+        const list = document.getElementById("recentChatsList");
+        list.innerHTML = "";
+
+        const recents = JSON.parse(localStorage.getItem("recentChats")) || [];
+
+        if (!recents.length) {
+            list.innerHTML = "<p>No recent conversations</p>";
+            return;
+        }
+
+        recents.forEach(item => {
+            const div = document.createElement("div");
+            div.className = "recent-chat-item";
+            div.innerHTML = `<strong>${item.text}</strong><p>${item.time}</p>`;
+            div.onclick = () => openRecentChat(item.text);
+            list.appendChild(div);
+        });
+    }
 
     /* ---------------- HOME MODE ---------------- */
     function enableHomeMode() {
@@ -29,66 +71,54 @@ document.addEventListener("DOMContentLoaded", () => {
 
     /* ---------------- Sidebar ---------------- */
     window.openSidebar = () => {
-        sidebar.classList.remove("is-hidden");
-        openBtn.classList.remove("show");
-        headerLogo.classList.remove("show");
-    };
+    sidebar.classList.remove("is-hidden");
+    headerLogo.style.display = "none";   // 👈 hide logo
+};
 
-    window.closeSidebar = () => {
-        sidebar.classList.add("is-hidden");
-        openBtn.classList.add("show");
-        headerLogo.classList.add("show");
-    };
+window.closeSidebar = () => {
+    sidebar.classList.add("is-hidden");
+    headerLogo.style.display = "";       // 👈 restore default
+};
+
 
     /* ---------------- Navigation ---------------- */
-window.goHome = () => {
-    enableHomeMode();
+    window.goHome = () => {
+        enableHomeMode();
+        homePage.style.display = "flex";
+        searchScreen.style.display = "none";
+        chatView.style.display = "none";
+        recentPage.style.display = "none";
+        resetConversation();
+    };
 
-    homePage.style.display = "flex";
-    searchScreen.style.display = "none";
-    chatView.style.display = "none";
-    recentPage.style.display = "none";
-
-    // Clear inputs & chat
-    queryInput.value = "";
-    alarmInput.value = "";
-    chatInput.value = "";
-    resultTab.innerHTML = "";
-
-    sidebar.classList.add("is-hidden");
-};
-
-
-
-window.startConversationFromHome = () => {
-    disableHomeMode();
-
-    homePage.style.display = "none";
-    searchScreen.style.display = "flex";
-    chatView.style.display = "none";
-    recentPage.style.display = "none";
-};
+    window.startConversationFromHome = () => {
+        resetConversation();
+        disableHomeMode();
+        homePage.style.display = "none";
+        searchScreen.style.display = "flex";
+        chatView.style.display = "none";
+        recentPage.style.display = "none";
+    };
 
     /* ---------------- Chat ---------------- */
-window.startChat = () => {
-    const q = queryInput.value.trim();
-    const a = alarmInput.value.trim();
-    if (!q && !a) return;
+    window.startChat = () => {
+        const userText = alarmInput.value.trim() || queryInput.value.trim();
+        if (!userText) return;
 
-    disableHomeMode();
+        saveToRecent(userText);
 
-    homePage.style.display = "none";
-    searchScreen.style.display = "none";
-    recentPage.style.display = "none";
-    chatView.style.display = "flex";
+        disableHomeMode();
+        homePage.style.display = "none";
+        searchScreen.style.display = "none";
+        recentPage.style.display = "none";
+        chatView.style.display = "flex";
 
-    addMessage(q || `Alarm Code: ${a}`, "user");
-    fakeBot(a || q);
+        addMessage(userText, "user");
+        fakeBot(userText);
 
-    queryInput.value = "";
-    alarmInput.value = "";
-};
-
+        queryInput.value = "";
+        alarmInput.value = "";
+    };
 
     window.sendMessage = () => {
         const text = chatInput.value.trim();
@@ -99,13 +129,17 @@ window.startChat = () => {
         fakeBot(text);
     };
 
-    /* ✅ Enter key support (ONLY ONCE) */
-    chatInput.addEventListener("keydown", (e) => {
-        if (e.key === "Enter" && !e.shiftKey) {
-            e.preventDefault();
+   chatInput.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+        e.preventDefault();
+
+        // ✅ Only send message if chat screen is visible
+        if (chatView.style.display === "flex") {
             sendMessage();
         }
-    });
+    }
+});
+
 
     function addMessage(text, type) {
         const div = document.createElement("div");
@@ -115,51 +149,63 @@ window.startChat = () => {
         resultTab.scrollTop = resultTab.scrollHeight;
     }
 
-window.callBackend = async function (userText) {
-    try {
-        const response = await fetch("http://127.0.0.1:22169/ask", {
+    async function fakeBot(text) {
+        const typing = document.createElement("div");
+        typing.className = "chat bot";
+        typing.textContent = "Loading...";
+        resultTab.appendChild(typing);
+
+        const res = await fetch("http://127.0.0.1:22169/ask", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ question: userText })
+            body: JSON.stringify({ question: text })
         });
 
-        const data = await response.json();
-        return data.answer;
-    } catch (err) {
-        console.error(err);
-        return "Server error. Please try again.";
+        const data = await res.json();
+        typing.textContent = data.answer;
     }
-};
-
-window.fakeBot = async function (text) {
-    const typingDiv = document.createElement("div");
-    typingDiv.className = "chat bot";
-    typingDiv.textContent = "Loading...";
-    resultTab.appendChild(typingDiv);
-    resultTab.scrollTop = resultTab.scrollHeight;
-
-    const reply = await window.callBackend(text);
-    typingDiv.textContent = reply;
-};
-
 
     /* ---------------- Recent ---------------- */
-window.showRecent = () => {
-    disableHomeMode();
+    window.showRecent = () => {
+        disableHomeMode();
+        homePage.style.display = "none";
+        searchScreen.style.display = "none";
+        chatView.style.display = "none";
+        recentPage.style.display = "flex";
+        loadRecentChats();
+    };
 
-    // Show ONLY recent page
-    homePage.style.display = "none";
-    searchScreen.style.display = "none";
-    chatView.style.display = "none";
-    recentPage.style.display = "flex";
+    window.openRecentChat = (text) => {
+        resetConversation();
+        disableHomeMode();
+        recentPage.style.display = "none";
+        chatView.style.display = "flex";
+        addMessage(text, "user");
+        fakeBot(text);
+    };
 
-    // Sidebar visible
-    sidebar.classList.remove("is-hidden");
-    openBtn.classList.add("show");
+    enableHomeMode();
+});
+
+window.clearRecentChats = () => {
+    if (!confirm("Clear all recent conversations?")) return;
+
+    // Clear storage
+    localStorage.removeItem("recentChats");
+
+    // Refresh recent UI immediately
+    loadRecentChats();
+
+    // Optional: force reflow for safety (helps in some browsers)
+    const list = document.getElementById("recentChatsList");
+    list.scrollTop = 0;
 };
 
-
-
-    /* Init */
-    enableHomeMode();
+[queryInput, alarmInput].forEach(input => {
+    input.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+            e.preventDefault();
+            startChat();
+        }
+    });
 });
