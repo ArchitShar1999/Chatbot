@@ -16,30 +16,23 @@ def ask_alarm_bot(question: str) -> str:
     if not context:
         return "Alarm code not found in the uploaded Excel."
 
-    prompt = f"""<|system|>
+    prompt = f"""[INST]
 {SYSTEM_PROMPT}
 
-<|user|>
 Alarm details:
 {context}
 
 Question:
 {question}
-
-<|assistant|>
+[/INST]
 """
 
     response = llm(
         prompt,
-        max_tokens=60,       # 🔥 FAST
+        max_tokens=120,       # 🔥 FAST
         temperature=0.1,     # 🔒 reliable
-        top_p=0.85,
-        stop=[
-            "<|system|>",
-            "<|user|>",
-            "<|assistant|>",
-            "</s>"
-        ]
+        top_p=0.9,
+        stop=["</s>"]
     )
 
     answer = response["choices"][0]["text"].strip()
