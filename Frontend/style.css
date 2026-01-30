@@ -233,14 +233,14 @@
     flex: 1;
     display: flex;
     flex-direction: column;
-    overflow: hidden; /* prevents full-page scroll */
+    overflow: hidden;
     padding: 0 18%;
 }
 
 .recent-chats-header {
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-around;
     padding: 12px 0;
     border-bottom: 1px solid #ddd;
 }
@@ -249,6 +249,13 @@
     margin: 0;
     font-size: 18px;
     color: #00303E;
+}
+
+/* Group Back + Clear buttons */
+.recent-actions {
+    display: flex;
+    gap: 8px;          /* 👈 adjust spacing here */
+    align-items: center;
 }
 
 .btn-close {
@@ -264,9 +271,22 @@
     background-color: #0056b3;
 }
 
+.btn-clear {
+    background-color: #dc3545;
+    color: #fff;
+    border: none;
+    padding: 5px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.btn-clear:hover {
+    background-color: #b52a37;
+}
+
 .recent-chats-list {
     flex: 1;
-    overflow-y: auto;  /* Only this scrolls */
+    overflow-y: auto;
     display: flex;
     flex-direction: column;
     gap: 14px;
@@ -311,5 +331,29 @@ body.home-active .chatbot-main {
 
 /* Hide menu button on home */
 body.home-active .chatbot-sidebar-open-btn {
+    display: none !important;
+}
+
+.btn-clear {
+    background-color: #dc3545;
+    color: #fff;
+    border: none;
+    padding: 5px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-right: 8px;
+}
+
+.btn-clear:hover {
+    background-color: #b52a37;
+}
+
+/* Hide header logo whenever sidebar is open */
+.chatbot-sidebar:not(.is-hidden) ~ .chatbot-main .header-logo {
+    display: none !important;
+}
+/* Hide header logo AND menu icon when sidebar is open */
+.chatbot-sidebar:not(.is-hidden) ~ .chatbot-main .header-logo,
+.chatbot-sidebar:not(.is-hidden) ~ .chatbot-main .chatbot-sidebar-open-btn {
     display: none !important;
 }
